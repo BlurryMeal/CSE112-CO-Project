@@ -396,7 +396,7 @@ def main():
                     break
 
                 finalBin = b + a + rs2 + rs1 + funct3 + d + c + opcode
-                print(finalBin)
+                finalBinList.append(finalBin)
 
                 ifHalt = 1
                 break
