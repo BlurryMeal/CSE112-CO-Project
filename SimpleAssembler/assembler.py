@@ -198,9 +198,9 @@ def main():
         InstructionVal = CheckVal[0]       #Instruction for Command : Example add, sub, mul etc.
         
         if InstructionVal not in isaDesc.keys():
-            print("Error in Instruction Name in line ", ProgramCounter+1)
             errorFlag=1
-            break
+            return ("Error in Instruction Name in line ", ProgramCounter+1)
+            
         
         #print(InstructionVal)
         #print(FinalParamList)
@@ -214,9 +214,9 @@ def main():
         
         if valDict["type"] == "R":
             if FinalParamList[0] not in regDesc.keys() or FinalParamList[1] not in regDesc.keys() or FinalParamList[2] not in regDesc.keys():
-                print("Error in Register Name in line ", ProgramCounter+1)
                 errorFlag=1
-                break
+                return ("Error in Register Name in line ", ProgramCounter+1)
+                
             
             opcode = valDict["bin"]
             funct3 = valDict["funct3"]
@@ -234,9 +234,9 @@ def main():
                 immediateVal, rstemp = splitBracket(FinalParamList[1])
 
                 if rstemp not in regDesc.keys() or FinalParamList[0] not in regDesc.keys():
-                    print("Error in Register Name in line ", ProgramCounter+1)
                     errorFlag=1
-                    break
+                    return ("Error in Register Name in line ", ProgramCounter+1)
+                    
                 
                 else:
                     rs = regDesc[rstemp]
@@ -247,9 +247,9 @@ def main():
             else:
 
                 if FinalParamList[0] not in regDesc.keys() or FinalParamList[1] not in regDesc.keys():
-                    print("Error in Register Name in line ", ProgramCounter+1)
                     errorFlag=1
-                    break
+                    return ("Error in Register Name in line ", ProgramCounter+1)
+                    
 
 
                 binNumtemp = DecimalToBinary(int(FinalParamList[2]),12)   # sign extension needs to be done and two's complement if negative.
@@ -261,9 +261,9 @@ def main():
             
             
             if binNumtemp == "FLAG":
-                print("Illegal Action: Immediate length out of bound on line:", commands.index(i)+1)
                 errorFlag = 1
-                break
+                return ("Illegal Action: Immediate length out of bound on line:", commands.index(i)+1)
+                
         
             finalBin = binNumtemp + rs + funct3 + rd + opcode
             
@@ -273,9 +273,9 @@ def main():
             immediateVal, rstemp = splitBracket(FinalParamList[1])
 
             if FinalParamList[0] not in regDesc.keys() or rstemp not in regDesc.keys():
-                print("Error in Register Name in line ", ProgramCounter+1)
                 errorFlag=1
-                break
+                return ("Error in Register Name in line ", ProgramCounter+1)
+                
 
             else:
                 rs1 = regDesc[rstemp]
@@ -294,9 +294,9 @@ def main():
             rs2 = regDesc[FinalParamList[0]]
             
             if binNumtemp == "FLAG":
-                print("Illegal Action: Immediate length out of bound on line:", commands.index(i)+1)
                 errorFlag = 1
-                break
+                return ("Illegal Action: Immediate length out of bound on line:", commands.index(i)+1)
+                
             
             finalBin = a + rs2 + rs1 + funct3 + b + opcode
             
@@ -312,9 +312,9 @@ def main():
                 a+=str1[j]
             
             if FinalParamList[0] not in regDesc.keys():
-                print("Error in Register Name in line ", ProgramCounter+1)
                 errorFlag=1
-                break
+                return ("Error in Register Name in line ", ProgramCounter+1)
+                
             
             finalBin = a + rd + opcode
 
@@ -322,9 +322,9 @@ def main():
         if valDict["type"]=="J":
             
             if FinalParamList[0] not in regDesc.keys():
-                print("Error in Register Name in line ", ProgramCounter+1)
                 errorFlag=1
-                break
+                return ("Error in Register Name in line ", ProgramCounter+1)
+                
             
             tempVal = FinalParamList[1]
             asciiFlag = 0
@@ -347,15 +347,15 @@ def main():
                 binNumtemp = DecimalToBinary(newProgCount, 20)
             
             else:
-                print("Label Name is Incorrect in Line:", ProgramCounter+1)
                 errorFlag = 1
-                break
+                return ("Label Name is Incorrect in Line:", ProgramCounter+1)
+                
 
 
             if binNumtemp == "FLAG":
-                    print("Illegal Action: Immediate length out of bound on line:", commands.index(i)+1)
                     errorFlag = 1
-                    break
+                    return ("Illegal Action: Immediate length out of bound on line:", commands.index(i)+1)
+                    
             
 
             c = binNumtemp[0]
@@ -372,9 +372,9 @@ def main():
         if valDict["type"]=="B":
             
             if FinalParamList[0] not in regDesc.keys() or FinalParamList[1] not in regDesc.keys():
-                print("Error in Register Name in line ", ProgramCounter+1)
                 errorFlag=1
-                break
+                return ("Error in Register Name in line ", ProgramCounter+1)
+                
 
             
 
@@ -391,9 +391,9 @@ def main():
                 d = "0"*4
 
                 if ProgramCounter!=len(commands)-1 and errorFlag==0:
-                    print("Assembly Code doesn't have Virtual Halt Instruction as the last instruction")
                     errorFlag=1
-                    break
+                    return ("Assembly Code doesn't have Virtual Halt Instruction as the last instruction")
+                    
 
                 finalBin = b + a + rs2 + rs1 + funct3 + d + c + opcode
                 finalBinList.append(finalBin)
@@ -421,9 +421,9 @@ def main():
                 binNumtemp = DecimalToBinary(newProgCount, 12)
             
             else:
-                print("Label Name is Incorrect in Line:", ProgramCounter+1)
                 errorFlag = 1
-                break
+                return ("Label Name is Incorrect in Line:", ProgramCounter+1)
+                
             
             
 
@@ -438,18 +438,18 @@ def main():
             d=binNumtemp[7:11]
             
             if binNumtemp == "FLAG":
-                print("Illegal Action: Immediate length out of bound on line:", commands.index(i)+1)
                 errorFlag = 1
-                break
+                return ("Illegal Action: Immediate length out of bound on line:", commands.index(i)+1)
+                
 
             finalBin = b + a + rs2 + rs1 + funct3 + d + c + opcode
 
         if valDict["type"] == "E":
             
             if FinalParamList[0] not in regDesc.keys() or FinalParamList[1] not in regDesc.keys() or FinalParamList[2] not in regDesc.keys():
-                print("Error in Register Name in line ", ProgramCounter+1)
                 errorFlag=1
-                break
+                return ("Error in Register Name in line ", ProgramCounter+1)
+                
             
             opcode = valDict["bin"]
             funct3 = valDict["funct3"]
@@ -469,9 +469,8 @@ def main():
         if valDict["type"] == "G":
             
             if FinalParamList[0] not in regDesc.keys() or FinalParamList[1] not in regDesc.keys():
-                print("Error in Register Name in line ", ProgramCounter+1)
                 errorFlag=1
-                break
+                return ("Error in Register Name in line ", ProgramCounter+1)
             
             opcode = valDict["bin"]
             funct3 = valDict["funct3"]
@@ -494,7 +493,7 @@ def main():
     f.close()
 
     if ifHalt == 0 and errorFlag == 0:
-        print("Assembly Code Missing Virtual Halt Instruction")
+        return ("Assembly Code Missing Virtual Halt Instruction")
 
 
 
